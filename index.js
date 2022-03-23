@@ -1,22 +1,28 @@
 
-const movieRouter= require("./routers/movieRouter")
-
-
 // Módulos externos
 const express = require('express'); // Importando módulo NPM (libería)
+const bodyParser = require('body-parser');
 const router = express.Router();
 
-const app = express() // Inicializa el servidor. App es un bjeto que representa el server
-const port = 3000
+const app = express(); // Inicializa el servidor. App es un bjeto que representa el server
+const port = 3000;
 
-// Rutas
-//const entryRouter = require('./routes/entry');
-//const productRouter = require('./routes/products');
+app.use(bodyParser.json());
 
+const filmRouter= require("./routers/film");//Llamamos al router
 
-// Rutas
-//app.use("/",productRouter);// WEB
-//app.use("/api",entryRouter);// API
+app.use('/api/film', filmRouter);//Usamos el router
+
+app.use(function(req, res, next) {
+    return res.status(404).send({ message: 'Ruta '+req.url+' no encontrada.' });
+  });
+
+app.use(function(err, req, res, next) {
+    console.error(err.stack);
+    res.status(500).send('Algo salió mal.');
+  });
+=======
+
 
 
 app.listen(port, () => {
@@ -27,5 +33,6 @@ app.listen(port, () => {
 
 
 
-app.use('/api', movieRouter)
+
+
 
